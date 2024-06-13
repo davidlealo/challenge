@@ -60,7 +60,7 @@ app.get('api/users', async (req, res)=>{
     // 3. Filtrar los datos desde la bbdd o memoria
     const search = q.toString().toLowerCase()
     const filteredData = userData.filter(row => {
-        Object.values(row).some(value => value.toLowerCase().includes(search))
+        return Object.values(row).some(value => value.toLowerCase().includes(search))
     })
     // 4. Return 200 con el data filtrado
     return res.status(200).json({data: filteredData})
