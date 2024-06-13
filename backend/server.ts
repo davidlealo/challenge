@@ -44,10 +44,26 @@ app.post('/api/files', upload.single('file'), async (req, res) => {
 
 app.get('api/users', async (req, res)=>{
     // 1. Extraer el parámetro 'q' de la querry desde el request
+    const {q} = req.query
     // 2. validar que tenemos el parámetro de la querry
+    if (!q){
+        return res.status(500).json({
+            message: 'El parámetro q de la consulta es obligatorio'
+        })
+    }
+
+    if (Array.isArray(q)){
+        return res.status(500).json({
+            message: 'El parámetro q de la consulta debe ser un string'
+        })
+    }
     // 3. Filtrar los datos desde la bbdd o memoria
+    const search = q.toString().toLowerCase()
+    const filteredData = userData.filter(row => {
+        Object.values(row).some(value => value.toLowerCase().includes(search))
+    })
     // 4. Return 200 con el data filtrado
-    return res.status(200).json({data: []})
+    return res.status(200).json({data: filteredData})
 })
 
 app.listen(port, ()=>{
