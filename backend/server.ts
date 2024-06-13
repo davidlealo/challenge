@@ -1,20 +1,45 @@
 import express from 'express'
 import cors from 'cors'
+import multer from 'multer'
+import csvToJson from 'convert-csv-to-json'
+
 
 const app = express()
 const port = 3000
 
+const storage = multer.memoryStorage()
+const upload = multer({ storage })
+
+let userData: Array<Record<string, string>> = []
+
 app.use(cors())
 
-app.post('/api/files', async (req, res) => {
+app.post('/api/files', upload.single('file'), async (req, res) => {
     // 1. Extraer el archivo desde la request
+    const {file} = req
     // 2. Validar que tenemos el archivo
+    if (!file){
+        return res.status(500).json({message: 'El archivo es requerido'})
+    }
     // 3. Validar el tipo (CSV)
+    if (file.mimetype !== 'text/csv'){
+        return res.status(500).json({message: 'El archivo debe ser un csv'})
+    }
     // 4. Tranformar el archivo (Bufer) a string
-    // 5. Transformar el string a CSV
+    let json: Array<Record<string, string>> = []
+    try{
+        const rawCsv = Buffer.from(file.buffer).toString('utf-8')
+        console.log(rawCsv)
+        // 5. Transformar el string CSV a JSON
+        json = csvToJson.csvStringToJson(rawCsv)
+    } catch (error){
+        return res.status(500).json({message: 'Error parseando el archivo'})
+    }
     // 6. guardar el JS en la BBDD (o en la memoria)
+    userData = json
+
     // 7. Return 200 con el mensaje y el JSON
-    return res.status(200).json({data: [], message: 'Archivo subido exitosamente'})
+    return res.status(200).json({data: userData, message: 'Archivo subido exitosamente'})
 })
 
 app.get('api/users', async (req, res)=>{
