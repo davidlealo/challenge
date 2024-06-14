@@ -6,7 +6,10 @@ import { Toaster, toast } from "sonner"
 export const Search = ({initialData: {initialData: Data}}) => {
     const [data, setData] = useState<Data>(initialData)
     
-    const [search, setSearch] = useState<string>('')
+    const [search, setSearch] = useState<string>(()=>{
+        const searchParams = new URLSearchParams(window.location.search)
+        return searchParams.get('q') ?? ''
+    })
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value)
