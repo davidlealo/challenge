@@ -12,7 +12,7 @@ const APP_STATUS = {
   UPLOADING: 'uploading',
   READY_UPLOAD: 'ready_upload',
   READY_USAGE: 'ready_usage',
-} as const 
+} as const
 
 const BUTTON_TEXT = {
   [APP_STATUS.READY_UPLOAD]: 'Subir archivo',
@@ -28,26 +28,26 @@ function App() {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ?? []
-    
-    if (file){
+
+    if (file) {
       setFile(file)
       setAppStatus(APP_STATUS.READY_UPLOAD)
     }
   }
 
-  const handleSumit = async (event: React.FormEvent<HTMLElement>) =>{
+  const handleSumit = async (event: React.FormEvent<HTMLElement>) => {
     event.preventDefault()
-    
-    if(appStatus !== APP_STATUS.READY_UPLOAD || !file){
-      return 
+
+    if (appStatus !== APP_STATUS.READY_UPLOAD || !file) {
+      return
     }
 
     setAppStatus(APP_STATUS.UPLOADING)
 
     const [err, newData] = await uploadFile(file)
-    console.log({newData})
+    console.log({ newData })
 
-    if(err){
+    if (err) {
       setAppStatus(APP_STATUS.ERROR)
       toast.error(err.message)
       return
@@ -58,9 +58,9 @@ function App() {
     toast.success('Archivo subido correctamente')
   }
 
-  
 
-  const showButton = appStatus === APP_STATUS.READY_UPLOAD || appStatus === APP_STATUS.UPLOADING 
+
+  const showButton = appStatus === APP_STATUS.READY_UPLOAD || appStatus === APP_STATUS.UPLOADING
   const showInput = appStatus !== APP_STATUS.READY_USAGE
 
   return (
@@ -69,20 +69,20 @@ function App() {
       <h4>App Challenge</h4>
       {
         showInput && (<form onSubmit={handleSumit}>
-        <label>
-        <input 
-        disabled={appStatus === APP_STATUS.UPLOADING}
-        onChange={handleInputChange} 
-        type="file" 
-        name="file" 
-        id="file" 
-        accept='.csv'/>
-        </label>
+          <label>
+            <input
+              disabled={appStatus === APP_STATUS.UPLOADING}
+              onChange={handleInputChange}
+              type="file"
+              name="file"
+              id="file"
+              accept='.csv' />
+          </label>
 
-        {showButton && (<button disabled={appStatus === APP_STATUS.UPLOADING}>
-          {BUTTON_TEXT[appStatus]}
-        </button>)}
-      </form>)
+          {showButton && (<button disabled={appStatus === APP_STATUS.UPLOADING}>
+            {BUTTON_TEXT[appStatus]}
+          </button>)}
+        </form>)
       }
 
       {
@@ -90,7 +90,7 @@ function App() {
           <Search initialData={data} />
         )
       }
-      
+
     </>
   )
 }
