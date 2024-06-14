@@ -10,6 +10,11 @@ const APP_STATUS = {
   READY_USAGE: 'ready_usage',
 } as const 
 
+const BUTTON_TEXT = {
+  [APP_STATUS.READY_UPLOAD]: 'Subir archivo',
+  [APP_STATUS.UPLOADING]: 'Subiendo ...'
+}
+
 type appStatusType = typeof APP_STATUS[keyof typeof APP_STATUS]
 
 function App() {
@@ -29,12 +34,31 @@ function App() {
     event.preventDefault()
     console.log('TODO')
   }
+
+  const getButtonText = () =>{
+    switch (appStatus){
+      case APP_STATUS.READY_UPLOAD:
+        return 'Subir archivo'
+      case APP_STATUS.UPLOADING:
+        return 'Subiendo...'
+      default:
+        return 'Subir archivo'
+    }
+  }
+  const showButton = appStatus === APP_STATUS.READY_UPLOAD || appStatus === APP_STATUS.UPLOADING 
+
   return (
     <>
       <h4>App Challenge</h4>
       <form onSubmit={handleSumit}>
         <label>
-        <input onChange={handleInputChange} type="file" name="file" id="file" accept='.csv'/>
+        <input 
+        disabled={appStatus === APP_STATUS.UPLOADING}
+        onChange={handleInputChange} 
+        type="file" 
+        name="file" 
+        id="file" 
+        accept='.csv'/>
         </label>
 
         {appStatus === APP_STATUS.READY_UPLOAD && (<button>
