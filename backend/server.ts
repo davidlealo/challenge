@@ -29,9 +29,8 @@ app.post('/api/files', upload.single('file'), async (req, res) => {
     let json: Array<Record<string, string>> = []
     try{
         const rawCsv = Buffer.from(file.buffer).toString('utf-8')
-        console.log(rawCsv)
         // 5. Transformar el string CSV a JSON
-        json = csvToJson.csvStringToJson(rawCsv)
+        json = csvToJson.fieldDelimiter(',').csvStringToJson(rawCsv)
     } catch (error){
         return res.status(500).json({message: 'Error parseando el archivo'})
     }
@@ -42,7 +41,7 @@ app.post('/api/files', upload.single('file'), async (req, res) => {
     return res.status(200).json({data: userData, message: 'Archivo subido exitosamente'})
 })
 
-app.get('api/users', async (req, res)=>{
+app.get('/api/users', async (req, res)=>{
     // 1. Extraer el parámetro 'q' de la querry desde el request
     const {q} = req.query
     // 2. validar que tenemos el parámetro de la querry
