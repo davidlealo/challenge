@@ -32,19 +32,16 @@ function App() {
 
   const handleSumit = (event: React.FormEvent<HTMLElement>) =>{
     event.preventDefault()
-    console.log('TODO')
+    
+    if(appStatus !== APP_STATUS.READY_UPLOAD || !file){
+      return 
+    }
+
+    setAppStatus(APP_STATUS.UPLOADING)
   }
 
-  const getButtonText = () =>{
-    switch (appStatus){
-      case APP_STATUS.READY_UPLOAD:
-        return 'Subir archivo'
-      case APP_STATUS.UPLOADING:
-        return 'Subiendo...'
-      default:
-        return 'Subir archivo'
-    }
-  }
+  
+
   const showButton = appStatus === APP_STATUS.READY_UPLOAD || appStatus === APP_STATUS.UPLOADING 
 
   return (
@@ -61,8 +58,8 @@ function App() {
         accept='.csv'/>
         </label>
 
-        {appStatus === APP_STATUS.READY_UPLOAD && (<button>
-          Subir archivo
+        {showButton && (<button disabled={appStatus === APP_STATUS.UPLOADING}>
+          {BUTTON_TEXT[appStatus]}
         </button>)}
       </form>
     </>
