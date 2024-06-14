@@ -27,10 +27,9 @@ function App() {
   const [file, setFile] = useState<File | null>(null)
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ?? []
-
-    if (file) {
-      setFile(file)
+    const files = event.target.files
+    if (files && files.length > 0) {
+      setFile(files[0])
       setAppStatus(APP_STATUS.READY_UPLOAD)
     }
   }
