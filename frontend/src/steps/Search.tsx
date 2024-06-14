@@ -21,6 +21,11 @@ export const Search = ({initialData: {initialData: Data}}) => {
     }, [search])
 
     useEffect(() =>{
+        if(!search){
+            setData(initialData)
+            return
+        }
+
         searchData(search)
         .then(response => {
             const [err, newData] = response
@@ -30,7 +35,7 @@ export const Search = ({initialData: {initialData: Data}}) => {
             }
 
             if(newData) setData(newData)
-        })
+        }, [search, initialData])
     })
 
     return (
@@ -40,19 +45,10 @@ export const Search = ({initialData: {initialData: Data}}) => {
                 <input onChange={handleSearch} type="search" name="" id="" placeholder="Buscar información..."/>
             </form>
             <ul>{
-                data.map((row, index) => (
+                data.map((row) => (
                     <li key={row.id}>
                         <article>
-                           <h2>{index}</h2>
-                           <ul>
-                            {
-                                Object.keys(row).map(key => (
-                                    <li>
-                                        <strong>{key}</strong>: {row[key]}
-                                    </li>
-                                ))
-                            }
-                            </ul> 
+                           {Object.entries(row).map(([key, value]) => <p key={key}><strong>{key}</strong>:{value}</p>)}
                         </article>
                     </li>
                 ))
