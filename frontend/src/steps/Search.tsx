@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Data } from "../services/types"
+import { type Data } from "../services/types"
 import { searchData } from "../services/search"
 import { Toaster, toast } from "sonner"
 

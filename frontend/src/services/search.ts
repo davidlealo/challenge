@@ -1,5 +1,4 @@
 import { type Data } from "./types"
-import { type apiUploadResponse} from "./types"
 import { type apiSearchResponse } from "./types"
 
 export const searchData = async (search: string): Promise<[Error?, Data?]> =>{
