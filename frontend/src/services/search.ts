@@ -5,7 +5,7 @@ import { type apiSearchResponse } from "./types"
 export const searchData = async (search: string): Promise<[Error?, Data?]> =>{
 
     try{
-        const res = await fetch(`http://localhost:3000/api/users?=${search}`)
+        const res = await fetch(`http://localhost:4000/api/users?=${search}`)
 
         if(!res.ok) return [new Error(`Error al buscar: ${res.statusText}`)]
         const json = await res.json() as apiSearchResponse

@@ -6,7 +6,7 @@ export const uploadFile = async (file: File): Promise<[Error?, Data?]> =>{
     formData.append('file', file)
 
     try{
-        const res = await fetch(`http://localhost:3000/api/files`, {
+        const res = await fetch(`http://localhost:4000/api/files`, {
             method: 'POST',
             body: formData
         })
