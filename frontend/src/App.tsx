@@ -4,6 +4,7 @@ import { uploadFile } from './services/upload'
 
 import './App.css'
 import { type Data } from './services/types'
+import { Search } from './steps/Search'
 
 const APP_STATUS = {
   IDLE: 'idle',
@@ -86,16 +87,7 @@ function App() {
 
       {
         appStatus == APP_STATUS.READY_USAGE && (
-          <div>
-            <h4>Usuarios</h4>
-            <ul>
-              {data.map((row, index) => (
-                <li key={index}>
-                  {Object.values(row).join(' - ')}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <Search initialData={data} />
         )
       }
       
